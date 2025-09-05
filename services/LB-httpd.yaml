@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lb-httpd-deployment
+  labels:
+    name: lb-httpd
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: lb-httpd
+  template:
+    metadata:
+      name: httpd-lb-deployment
+      labels:
+        name: lb-httpd
+    spec:
+      containers:
+        - name: httpd-container
+          image: httpd:latest
+          ports:
+            - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd-lb-service
+  labels:
+    name: lb-httpd
+spec:
+  selector:
+    name: lb-httpd
+  ports:
+    - port: 80
+      targetPort: 80
+  type: LoadBalancer

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-deployment
+  labels:
+    app: httpd-1
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: httpd-1
+  template:
+    metadata:
+      name: httpd-container
+      labels: 
+        app: httpd-1
+    spec:
+      containers:
+        - name: httpd
+          image: httpd:latest
+          ports:
+            - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd-service
+  labels:
+    app: httpd-1
+spec:
+  selector:
+    app: httpd-1
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP
