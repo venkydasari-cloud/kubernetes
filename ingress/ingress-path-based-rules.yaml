@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1 
+kind: Ingress
+metadata:
+  name: path-based-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"   # use regular expression = true
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx #product name or which ingress controller (ex: celium, trafik, istio etc)
+  rules:
+  - http:
+      paths:
+        - path: /nginx   # (/|$)(.*) this is called a wild card. in the above annotations regular expression refers this wild cards.                          
+          pathType: Prefix
+          backend:
+            service:
+              name: nginx-service-in 
+              port:
+                number: 80
+        - path: /httpd   # / = after nginx the url can have /, | is called or. which means it can have / or any letters or words. (ex: nginx/batch, ex: nginx01pod - here the first letters shoulb be nginx)   
+          pathType: Prefix      
+          backend:            # if the url is hit where the hit should go 
+            service:
+              name: httpd-service-in  
+              port:
+                number: 80
+        - path: /     # default or home page path. (.* means it can be anything like letters or numbers)
+          pathType: Prefix
+          backend:            # if the url is hit where the hit should go 
+            service:
+              name: httpd-service-in  
+              port:
+                number: 80

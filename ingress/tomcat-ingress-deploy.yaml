@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat-deployment-ingress
+  labels:
+    app: tomcat-4
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tomcat-4
+  template:
+    metadata:
+      name: tomcat-pod
+      labels:
+        app: tomcat-4
+    spec:
+      containers:
+        - name: tomcat-container
+          image: tomcat:latest
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tomcat-service-in
+  labels:
+    app: tomcat-4
+spec:
+  selector:
+    app: tomcat-4
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP
