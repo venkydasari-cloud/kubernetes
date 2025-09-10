@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-np-deployment
+  labels:
+    application: nginx
+  namespace: venky
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      application: nginx
+  template:
+    metadata:
+      name: nginx-service-np
+      labels:
+        application: nginx
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          resources:          # if this is not described here then the replica or pods will take the values from limit range file. it is always best practice to write resources here.
+            requests:
+              cpu: "100m"           # this is the minimum cpu and ram utilized to start a pod. or during starting of a pod.
+              memory: "100Mi"
+            limits:
+              cpu: "150m"           # this is the max limit a pod can use during its running ststae. lite when the transactions happen in production the pod can use up to the defined cpu and ram utilization.
+              memory: "150Mi"

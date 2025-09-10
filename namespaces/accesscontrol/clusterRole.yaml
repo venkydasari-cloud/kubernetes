@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1 
+kind: ClusterRole
+metadata:
+  name: pod-log-reader
+rules:
+  - apiGroups:      
+    - ""            
+    resources:      
+      - pods
+      - pods/log
+    verbs: ["get","create","update","list"]   
+
+
+# only difference b/w role and cluster role is role acts at name psace level
+# cluster role acts at cluster level hence no need to mention name space as it has access to multiple namespaces.

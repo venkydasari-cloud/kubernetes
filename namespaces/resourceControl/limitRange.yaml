@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: LimitRange
+metadata: 
+  name: venky-ns-limits
+  namespace: venky
+spec:
+  limits:
+    - type: Pod     # type of the object which is going to be created in this namespace.
+      min:          # request
+        cpu: "100m"
+        memory: "100Mi"     #minum resources to be used by a single pod. total = 10 pods
+      max:                  # max 
+        cpu: "150m"         # total = 6 pods.
+        memory: "150Mi"
+
+

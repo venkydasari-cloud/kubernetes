@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: venky-ns-resourcequota
+  namespace: venky
+spec:
+  hard:         # hard and soft limits set the limits. hard limit means if the limit which is described to the namespace is exceeded then it wont allow. soft link will allow if the limit is exceeded upto an extent.
+    requests.cpu: "1"    # min cpu can be used. min is described as request.
+    requests.memory: "1Gi"
+    limits.cpu: "2"       # max is described as limit
+    limits.memory: "2Gi"
+    pods: "10"
+
+# 1cpu = 1000 m (milli cores)  = 10 x 100m = 10pods
+# 1Gi memory = 1000Mi (mivi bytes) = 10 x 100 = 10 pods
+
+# 1cpu = 1000 m (milli cores)  = 10 x 100m = 6 pods
+# 1Gi memory = 1000Mi (mivi bytes) = 10 x 150 = 6 pods      #here if any one of the resources limit is exceeded then the pods created as per that resources will be considered even there is space in another resource.

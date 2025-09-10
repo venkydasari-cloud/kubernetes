@@ -1,0 +1,17 @@
+apiVersion: rbac.authorization.k8s.io/v1 
+kind: Role
+metadata:
+  name: pod-log-reader
+  namespace: venky
+rules:
+  - apiGroups:      # what apis he can access inside that name space. 
+    - ""            # "" indicates all. means all apis from the namespace can be accessed. only read.
+    resources:      # for particular apis what can he do is described here
+      - pods
+      - pods/log
+    verbs: ["get","create","update","list"]   # for pods and pod logs he can get, create and update etc. 
+    
+    # verbs indicates api methods.
+
+
+    # to apply the particular above rules to a user we need to create rolebindings.

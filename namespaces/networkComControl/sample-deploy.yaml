@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-np-deployment
+  labels:
+    application: nginx
+  namespace: venky
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      application: nginx
+  template:
+    metadata:
+      name: nginx-service-np
+      labels:
+        application: nginx
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:latest
+          ports:
+            - containerPort: 80
