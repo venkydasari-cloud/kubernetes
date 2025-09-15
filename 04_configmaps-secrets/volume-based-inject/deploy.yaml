@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-prod
+  labels:
+    name: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: nginx
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        name: nginx
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: nginx-prod-volume
+          mountPath: /etc/nginx/conf.d/
+        - name: nginx-prod-volume-2
+          mountPath: /etc/nginx/
+      volumes:
+      - name: nginx-prod-volume
+        configMap:
+          name: nginx-prod-cm
+      - name: nginx-prod-volume-2
+        configMap:
+          name: nginx-prod-2
+      
+      
